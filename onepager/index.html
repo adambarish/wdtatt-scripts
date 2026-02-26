@@ -3,53 +3,69 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>One-Pager</title>
+  <title>One-Pager Download</title>
   <style>
-    html, body { height: 100%; margin: 0; background: #0b0b0b; }
+    html, body { height: 100%; margin: 0; background: #f6f6f6; }
     .wrap {
       height: 100%;
       display: grid;
       place-items: center;
       padding: 24px;
       text-align: center;
-      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: rgba(255,255,255,.82);
+      font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: rgba(0,0,0,.78);
     }
     .card {
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.10);
       border-radius: 14px;
       padding: 14px 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      max-width: 320px;
+      max-width: 340px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
     }
-    a { color: rgba(255,255,255,.9); text-decoration: underline; text-underline-offset: 3px; }
-    .small { margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.62); }
+    .small {
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(0,0,0,.55);
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+    .small.show { opacity: 1; transform: translateY(0); }
+    a { color: rgba(0,0,0,.72); text-decoration: underline; text-underline-offset: 3px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       Preparing download…
-      <div class="small">
-        If it doesn’t start, <a id="fallback" href="#" target="_blank" rel="noopener">open download</a>.
+      <div id="fallback" class="small">
+        If nothing happens, <a id="fallbackLink" href="#" target="_blank" rel="noopener">click here</a>.
       </div>
-      <div class="small">You can close this tab once it starts.</div>
+      <div class="small show" style="margin-top:10px;">
+        You can close this tab once it starts.
+      </div>
     </div>
   </div>
 
   <script>
     const url = "https://drive.google.com/uc?export=download&id=1lUfaJtyPsqQHa-uMU5ycCeGnelZK9lfB";
-    document.getElementById("fallback").href = url;
+    const fallback = document.getElementById("fallback");
+    const fallbackLink = document.getElementById("fallbackLink");
+    fallbackLink.href = url;
 
-    // Start download in the background (keeps this page visible and responsive)
+    // Start download in background
     setTimeout(() => {
       const ifr = document.createElement("iframe");
       ifr.style.display = "none";
       ifr.src = url;
       document.body.appendChild(ifr);
     }, 150);
+
+    // Only show fallback if it seems stalled (reduces redundancy)
+    setTimeout(() => {
+      fallback.classList.add("show");
+    }, 4000);
   </script>
 </body>
 </html>
