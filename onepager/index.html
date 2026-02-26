@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>One-Pager Download</title>
   <style>
-    html, body { height: 100%; margin: 0; background: #f6f6f6; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #f6f6f6;
+    }
+
     .wrap {
       height: 100%;
       display: grid;
@@ -15,57 +20,67 @@
       font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color: rgba(0,0,0,.78);
     }
+
     .card {
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(0,0,0,.08);
       border-radius: 14px;
-      padding: 14px 16px;
-      max-width: 340px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+      padding: 16px 18px;
+      max-width: 360px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.06);
     }
-    .small {
-      margin-top: 10px;
+
+    .primary {
+      margin-bottom: 10px;
+    }
+
+    .secondary {
       font-size: 12px;
       color: rgba(0,0,0,.55);
-      opacity: 0;
-      transform: translateY(2px);
-      transition: opacity 160ms ease, transform 160ms ease;
+      margin-top: 6px;
     }
-    .small.show { opacity: 1; transform: translateY(0); }
-    a { color: rgba(0,0,0,.72); text-decoration: underline; text-underline-offset: 3px; }
+
+    a {
+      color: rgba(0,0,0,.72);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
-      Preparing download…
-      <div id="fallback" class="small">
-        If nothing happens, <a id="fallbackLink" href="#" target="_blank" rel="noopener">click here</a>.
+      <div class="primary">
+        Preparing download…
       </div>
-      <div class="small show" style="margin-top:10px;">
-        You can close this tab once it starts.
+
+      <div class="secondary">
+        If the download does not begin after a few seconds,
+        <a id="fallbackLink" href="#" target="_blank" rel="noopener">
+          click here
+        </a>.
+      </div>
+
+      <div class="secondary" style="margin-top:10px;">
+        You may close this tab once the download begins.
       </div>
     </div>
   </div>
 
   <script>
     const url = "https://drive.google.com/uc?export=download&id=1lUfaJtyPsqQHa-uMU5ycCeGnelZK9lfB";
-    const fallback = document.getElementById("fallback");
-    const fallbackLink = document.getElementById("fallbackLink");
-    fallbackLink.href = url;
 
-    // Start download in background
+    // Set fallback link
+    document.getElementById("fallbackLink").href = url;
+
+    // Trigger background download
     setTimeout(() => {
-      const ifr = document.createElement("iframe");
-      ifr.style.display = "none";
-      ifr.src = url;
-      document.body.appendChild(ifr);
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = url;
+      document.body.appendChild(iframe);
     }, 150);
-
-    // Only show fallback if it seems stalled (reduces redundancy)
-    setTimeout(() => {
-      fallback.classList.add("show");
-    }, 4000);
   </script>
 </body>
 </html>
