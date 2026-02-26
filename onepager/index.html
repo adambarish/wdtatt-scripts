@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>One-Pager Download</title>
+  <title>One-Pager</title>
+
   <style>
     html, body {
       height: 100%;
@@ -45,10 +46,11 @@
       text-decoration: underline;
       text-underline-offset: 3px;
     }
-
   </style>
 </head>
+
 <body>
+
   <div class="wrap">
     <div class="card">
       <div class="primary">
@@ -63,7 +65,7 @@
       </div>
 
       <div class="secondary" style="margin-top:10px;">
-        You may close this tab once the download begins.
+        You can close this tab once it starts.
       </div>
     </div>
   </div>
@@ -74,13 +76,12 @@
     // Set fallback link
     document.getElementById("fallbackLink").href = url;
 
-    // Trigger background download
-    setTimeout(() => {
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = url;
-      document.body.appendChild(iframe);
-    }, 150);
+    // Trigger background download immediately
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = url;
+    document.body.appendChild(iframe);
   </script>
+
 </body>
 </html>
