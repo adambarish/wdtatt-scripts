@@ -22,22 +22,33 @@
       padding: 14px 16px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      max-width: 320px;
     }
     a { color: rgba(255,255,255,.9); text-decoration: underline; text-underline-offset: 3px; }
+    .small { margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.62); }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       Preparing download…
-      <div style="height:10px"></div>
-      <a href="https://drive.google.com/uc?export=download&id=1lUfaJtyPsqQHa-uMU5ycCeGnelZK9lfB">Click if it doesn’t start.</a>
+      <div class="small">
+        If it doesn’t start, <a id="fallback" href="#" target="_blank" rel="noopener">open download</a>.
+      </div>
+      <div class="small">You can close this tab once it starts.</div>
     </div>
   </div>
 
   <script>
+    const url = "https://drive.google.com/uc?export=download&id=1lUfaJtyPsqQHa-uMU5ycCeGnelZK9lfB";
+    document.getElementById("fallback").href = url;
+
+    // Start download in the background (keeps this page visible and responsive)
     setTimeout(() => {
-      window.location.href = "https://drive.google.com/uc?export=download&id=1lUfaJtyPsqQHa-uMU5ycCeGnelZK9lfB";
+      const ifr = document.createElement("iframe");
+      ifr.style.display = "none";
+      ifr.src = url;
+      document.body.appendChild(ifr);
     }, 150);
   </script>
 </body>
