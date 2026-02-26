@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Series Overview</title>
+  <style>
+    html, body { height: 100%; margin: 0; background: #0b0b0b; }
+    .wrap {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: rgba(255,255,255,.82);
+    }
+    .card {
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 14px 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    a { color: rgba(255,255,255,.9); text-decoration: underline; text-underline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      Preparing download…
+      <div style="height:10px"></div>
+      <a href="https://drive.google.com/uc?export=download&id=1pz1TPhbbR2GOL0RkqSqmuT7U0jDvVf0f">Click if it doesn’t start.</a>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "https://drive.google.com/uc?export=download&id=1pz1TPhbbR2GOL0RkqSqmuT7U0jDvVf0f";
+    }, 150);
+  </script>
+</body>
+</html>
