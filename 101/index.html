@@ -46,9 +46,7 @@
     .dl:active { transform: translateY(1px); }
     .dl svg { width: 18px; height: 18px; display: block; }
 
-    /* Tooltip
-       IMPORTANT: We do NOT let it "exist visually" when hidden.
-       This avoids cross-browser backdrop-filter ghosting artifacts. */
+    /* Tooltip — GUARANTEED: cannot ghost-render because it literally doesn't exist when hidden */
     .tip {
       position: absolute;
       right: 0;
@@ -57,51 +55,33 @@
       font: 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
       letter-spacing: .01em;
       color: rgba(255,255,255,.9);
-
-      /* Hidden state: not painted */
-      visibility: hidden;
-      opacity: 0;
-      transform: translateY(-4px);
-      pointer-events: none;
-
-      /* Hidden state: remove all “box” rendering to prevent ghosting */
-      background: transparent;
-      border: 1px solid transparent;
-      box-shadow: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-
-      /* Timing: delay appears, but hide is immediate */
-      transition:
-        opacity 140ms ease 220ms,
-        transform 140ms ease 220ms,
-        visibility 0s linear 360ms;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.14);
       padding: 8px 10px;
       border-radius: 12px;
-    }
-
-    /* Shown state: apply the real styling only when visible */
-    .dl-wrap:hover .tip,
-    .dl-wrap:focus-within .tip {
-      visibility: visible;
-      opacity: 1;
-      transform: translateY(0);
-
-      background: rgba(0,0,0,.55);
-      border-color: rgba(255,255,255,.14);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
 
-      transition:
-        opacity 140ms ease 220ms,
-        transform 140ms ease 220ms,
-        visibility 0s linear 0s;
+      /* hidden means truly not rendered */
+      display: none;
+      pointer-events: none;
+
+      /* animation only applies once displayed */
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 140ms ease, transform 140ms ease;
     }
 
-    /* Touch devices don’t have true hover; keep it frictionless */
+    .tip.is-visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Touch devices: no hover tooltip */
     @media (hover: none) {
-      .dl-wrap:hover .tip { visibility: hidden; opacity: 0; }
+      .tip, .tip.is-visible { display: none !important; }
     }
 
     /* Fallback (auto-hides after load) */
@@ -146,9 +126,10 @@
     allow="fullscreen">
   </iframe>
 
-  <div class="dl-wrap">
+  <div class="dl-wrap" id="dlWrap">
     <a
       class="dl"
+      id="dlBtn"
       href="https://drive.google.com/uc?export=download&id=1hcqX2bd-8A5ljpYoEaoJ-6db4F4Z1HZZ"
       aria-label="Download PDF">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -157,7 +138,7 @@
         <path d="M5 20h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
     </a>
-    <div class="tip">Download PDF</div>
+    <div class="tip" id="dlTip">Download PDF</div>
   </div>
 
   <div id="fallback" class="fallback">
@@ -172,13 +153,34 @@
       const viewer = document.getElementById("viewer");
       const fb = document.getElementById("fallback");
 
-      // Hide the fallback once the viewer iframe finishes loading.
-      // (We can’t reliably detect “user scrolled inside the iframe” due to cross-origin restrictions.)
+      // Hide fallback once iframe loads
       viewer.addEventListener("load", () => {
         setTimeout(() => fb.classList.add("is-hidden"), 600);
       });
 
-      // Optional: if it never loads, the fallback stays visible.
+      // Tooltip logic (220ms delay) — desktop only
+      const wrap = document.getElementById("dlWrap");
+      const tip = document.getElementById("dlTip");
+
+      if (wrap && tip && window.matchMedia && window.matchMedia("(hover: hover)").matches) {
+        let t;
+
+        const show = () => {
+          clearTimeout(t);
+          t = setTimeout(() => tip.classList.add("is-visible"), 220);
+        };
+
+        const hide = () => {
+          clearTimeout(t);
+          tip.classList.remove("is-visible");
+        };
+
+        wrap.addEventListener("mouseenter", show);
+        wrap.addEventListener("mouseleave", hide);
+        wrap.addEventListener("focusin", show);
+        wrap.addEventListener("focusout", hide);
+        window.addEventListener("scroll", hide, { passive: true });
+      }
     })();
   </script>
 
