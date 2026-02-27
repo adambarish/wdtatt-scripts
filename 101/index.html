@@ -6,11 +6,7 @@
   <title>Episode 101 — Script</title>
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: #0b0b0b;
-    }
+    html, body { height: 100%; margin: 0; background: #0b0b0b; }
 
     iframe {
       position: fixed;
@@ -22,7 +18,6 @@
       background: #0b0b0b;
     }
 
-    /* Download Control Wrapper */
     .dl-wrap {
       position: fixed;
       top: 14px;
@@ -42,28 +37,13 @@
       -webkit-backdrop-filter: blur(10px);
       color: rgba(255,255,255,.85);
       text-decoration: none;
-      transition:
-        background 120ms ease,
-        border-color 120ms ease,
-        transform 80ms ease;
+      transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
     }
 
-    .dl:hover {
-      background: rgba(0,0,0,.35);
-      border-color: rgba(255,255,255,.18);
-    }
+    .dl:hover { background: rgba(0,0,0,.35); border-color: rgba(255,255,255,.18); }
+    .dl:active { transform: translateY(1px); }
+    .dl svg { width: 18px; height: 18px; display: block; }
 
-    .dl:active {
-      transform: translateY(1px);
-    }
-
-    .dl svg {
-      width: 18px;
-      height: 18px;
-      display: block;
-    }
-
-    /* Tooltip */
     .tip {
       position: absolute;
       right: 0;
@@ -78,14 +58,10 @@
       border-radius: 12px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-
       opacity: 0;
       transform: translateY(-4px);
       pointer-events: none;
-
-      transition:
-        opacity 140ms ease 220ms,
-        transform 140ms ease 220ms;
+      transition: opacity 140ms ease 220ms, transform 140ms ease 220ms;
     }
 
     .dl-wrap:hover .tip,
@@ -94,7 +70,7 @@
       transform: translateY(0);
     }
 
-    /* Bottom-left Fallback */
+    /* Fallback (auto-hides after load) */
     .fallback {
       position: fixed;
       left: 14px;
@@ -108,6 +84,10 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 10;
+
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 220ms ease, transform 220ms ease;
     }
 
     .fallback a {
@@ -116,18 +96,22 @@
       text-underline-offset: 3px;
     }
 
+    .fallback.is-hidden {
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Viewer -->
   <iframe
+    id="viewer"
     src="https://drive.google.com/file/d/1hcqX2bd-8A5ljpYoEaoJ-6db4F4Z1HZZ/preview"
     allow="fullscreen">
   </iframe>
 
-  <!-- Download Button -->
   <div class="dl-wrap">
     <a
       class="dl"
@@ -142,13 +126,27 @@
     <div class="tip">Download PDF</div>
   </div>
 
-  <!-- Fallback -->
-  <div class="fallback">
+  <div id="fallback" class="fallback">
     If the script doesn’t load,
     <a href="https://drive.google.com/file/d/1hcqX2bd-8A5ljpYoEaoJ-6db4F4Z1HZZ/preview" target="_blank" rel="noopener">
       open it here
     </a>.
   </div>
+
+  <script>
+    (function () {
+      const viewer = document.getElementById("viewer");
+      const fb = document.getElementById("fallback");
+
+      // Hide the fallback once the viewer iframe finishes loading.
+      // (We can’t reliably detect “user scrolled inside the iframe” due to cross-origin restrictions.)
+      viewer.addEventListener("load", () => {
+        setTimeout(() => fb.classList.add("is-hidden"), 600);
+      });
+
+      // Optional: if it never loads, the fallback stays visible.
+    })();
+  </script>
 
 </body>
 </html>
