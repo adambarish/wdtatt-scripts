@@ -18,34 +18,39 @@
       background: #0b0b0b;
     }
 
-    /* Masks Google Drive’s own top-right floating UI (inside the iframe),
-       but with a soft fade so there’s no visible rectangle. */
-    .drive-ui-mask {
-      position: fixed;
-      top: 0;
-      right: 0;
-
-      /* Bigger footprint so the fade is gentle, not boxy */
-      width: 240px;
-      height: 240px;
-
-      /* Solid at the extreme corner (covers Drive UI), fading to transparent */
-      background: radial-gradient(
-        closest-side at 100% 0%,
-        rgba(11,11,11,1) 0%,
-        rgba(11,11,11,1) 62%,
-        rgba(11,11,11,0) 100%
-      );
-
-      z-index: 5;
-      pointer-events: none;
-    }
-
     .dl-wrap {
       position: fixed;
       top: 14px;
       right: 14px;
       z-index: 10;
+
+      /* NEW: create an isolated stacking context so ::before can sit behind the button */
+      isolation: isolate;
+    }
+
+    /* NEW: mask Google Drive’s top-right floating UI (inside the iframe)
+       with a rounded cap that matches the page background (no fade). */
+    .dl-wrap::before {
+      content: "";
+      position: absolute;
+
+      /* Anchor to the same corner as the button */
+      top: -18px;
+      right: -18px;
+
+      /* Size tuned to cover Drive’s floating control area */
+      width: 140px;
+      height: 140px;
+
+      /* Match page background exactly */
+      background: #0b0b0b;
+
+      /* Make it feel like a natural corner, not a box */
+      border-bottom-left-radius: 32px;
+
+      /* Behind the button, above the iframe */
+      z-index: -1;
+      pointer-events: none;
     }
 
     .dl {
@@ -134,9 +139,6 @@
     src="https://drive.google.com/file/d/1hcqX2bd-8A5ljpYoEaoJ-6db4F4Z1HZZ/preview"
     allow="fullscreen">
   </iframe>
-
-  <!-- Mask layer to hide Drive's floating UI -->
-  <div class="drive-ui-mask" aria-hidden="true"></div>
 
   <div class="dl-wrap">
     <a
