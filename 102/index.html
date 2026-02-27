@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Episode 102 — Script</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #0b0b0b;
+    }
+
+    iframe {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      border: 0;
+      display: block;
+      background: #0b0b0b;
+    }
+
+    .dl-wrap {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 10;
+    }
+
+    .dl {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      transition:
+        background 120ms ease,
+        border-color 120ms ease,
+        transform 80ms ease;
+    }
+
+    .dl:hover {
+      background: rgba(0,0,0,.35);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .dl:active {
+      transform: translateY(1px);
+    }
+
+    .dl svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .tip {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      white-space: nowrap;
+      font: 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      letter-spacing: .01em;
+      color: rgba(255,255,255,.9);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 8px 10px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      opacity: 0;
+      transform: translateY(-4px);
+      pointer-events: none;
+
+      transition:
+        opacity 140ms ease 220ms,
+        transform 140ms ease 220ms;
+    }
+
+    .dl-wrap:hover .tip,
+    .dl-wrap:focus-within .tip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fallback {
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      font: 13px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: rgba(255,255,255,.72);
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 10px 12px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .fallback a {
+      color: rgba(255,255,255,.9);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Viewer -->
+  <iframe
+    src="https://drive.google.com/file/d/1QR1EFFHcfdM6N0PiHH_75rUWsmn8Rf9-/preview"
+    allow="fullscreen">
+  </iframe>
+
+  <!-- Download Button -->
+  <div class="dl-wrap">
+    <a
+      class="dl"
+      href="https://drive.google.com/uc?export=download&id=1QR1EFFHcfdM6N0PiHH_75rUWsmn8Rf9-"
+      aria-label="Download PDF">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M8 11l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 20h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <div class="tip">Download PDF</div>
+  </div>
+
+  <!-- Fallback -->
+  <div class="fallback">
+    If the script doesn’t load,
+    <a href="https://drive.google.com/file/d/1QR1EFFHcfdM6N0PiHH_75rUWsmn8Rf9-/preview" target="_blank" rel="noopener">
+      open it here
+    </a>.
+  </div>
+
+</body>
+</html>
