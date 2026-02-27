@@ -4,41 +4,77 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Series Overview</title>
+
   <style>
-    html, body { height: 100%; margin: 0; background: #0b0b0b; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #f6f6f6;
+    }
+
     .wrap {
       height: 100%;
       display: grid;
       place-items: center;
       padding: 24px;
       text-align: center;
-      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: rgba(255,255,255,.82);
+      font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: rgba(0,0,0,.78);
     }
+
     .card {
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(0,0,0,.08);
       border-radius: 14px;
-      padding: 14px 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      padding: 16px 18px;
+      max-width: 360px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.06);
     }
-    a { color: rgba(255,255,255,.9); text-decoration: underline; text-underline-offset: 3px; }
+
+    .primary {
+      margin-bottom: 10px;
+    }
+
+    .secondary {
+      font-size: 12px;
+      color: rgba(0,0,0,.55);
+    }
+
+    a {
+      color: rgba(0,0,0,.72);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
   </style>
 </head>
+
 <body>
+
   <div class="wrap">
     <div class="card">
-      Preparing download…
-      <div style="height:10px"></div>
-      <a href="https://drive.google.com/uc?export=download&id=1pz1TPhbbR2GOL0RkqSqmuT7U0jDvVf0f">Click if it doesn’t start.</a>
+      <div class="primary">
+        Preparing download…
+      </div>
+
+      <div class="secondary">
+        If the download does not begin after a few seconds,
+        <a id="fallbackLink" href="#" target="_blank" rel="noopener">
+          click here
+        </a>.
+      </div>
     </div>
   </div>
 
   <script>
-    setTimeout(() => {
-      window.location.href = "https://drive.google.com/uc?export=download&id=1pz1TPhbbR2GOL0RkqSqmuT7U0jDvVf0f";
-    }, 150);
+    const url = "https://drive.google.com/uc?export=download&id=1pz1TPhbbR2GOL0RkqSqmuT7U0jDvVf0f";
+
+    document.getElementById("fallbackLink").href = url;
+
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = url;
+    document.body.appendChild(iframe);
   </script>
+
 </body>
 </html>
