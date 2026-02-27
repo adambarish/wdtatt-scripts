@@ -18,14 +18,25 @@
       background: #0b0b0b;
     }
 
-    /* Masks Google Drive’s own top-right floating UI (inside the iframe). */
+    /* Masks Google Drive’s own top-right floating UI (inside the iframe),
+       but with a soft fade so there’s no visible rectangle. */
     .drive-ui-mask {
       position: fixed;
       top: 0;
       right: 0;
-      width: 140px;
-      height: 140px;
-      background: #0b0b0b;
+
+      /* Bigger footprint so the fade is gentle, not boxy */
+      width: 240px;
+      height: 240px;
+
+      /* Solid at the extreme corner (covers Drive UI), fading to transparent */
+      background: radial-gradient(
+        closest-side at 100% 0%,
+        rgba(11,11,11,1) 0%,
+        rgba(11,11,11,1) 62%,
+        rgba(11,11,11,0) 100%
+      );
+
       z-index: 5;
       pointer-events: none;
     }
