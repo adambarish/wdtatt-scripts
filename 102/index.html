@@ -23,6 +23,14 @@
       top: 14px;
       right: 14px;
       z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .dl-wrap.is-visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .dl {
@@ -111,7 +119,7 @@
     allow="fullscreen">
   </iframe>
 
-  <div class="dl-wrap">
+  <div id="download" class="dl-wrap">
     <a
       class="dl"
       href="https://drive.google.com/uc?export=download&id=1QR1EFFHcfdM6N0PiHH_75rUWsmn8Rf9-"
@@ -136,9 +144,11 @@
     (function () {
       const viewer = document.getElementById("viewer");
       const fb = document.getElementById("fallback");
+      const download = document.getElementById("download");
 
       viewer.addEventListener("load", () => {
         setTimeout(() => fb.classList.add("is-hidden"), 600);
+        setTimeout(() => download.classList.add("is-visible"), 3000);
       });
     })();
   </script>
